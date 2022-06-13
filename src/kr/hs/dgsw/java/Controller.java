@@ -1,70 +1,49 @@
 package kr.hs.dgsw.java;
 
-import java.io.*;
+
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.Scanner;
 
 public class Controller {
 
-    private HashMap<String, PhoneBook> phone;
+    private Scanner sc;
+
+    private HashMap<String, String> phone;
+    private PhoneBookApp pba;
 
     private String filePath = "D:/test.txt";
 
     public Controller() {
-        phone = load();
-        System.out.println(phone);
-        if(phone == null) phone = new HashMap<>();
+        sc = new Scanner(System.in);
+        pba = new PhoneBookApp(phone, filePath);
+        pba.load();
     }
 
-    private HashMap<String, PhoneBook> load() {
-        HashMap<String, PhoneBook> map = null;
+    public void start() {
+        while(true){
+            String input = sc.nextLine();
 
-        File file = new File(filePath);
-        if(!file.exists()) file.mkdirs();
+            switch (input){
+                case "/도움말" : manual(); break;
+                case "/등록" : pba.insert(); break;
+                case "/검색" : pba.search(); break;
+                case "/삭제" : pba.delete(); break;
+                case "/종료" : return;
+                default: System.out.println("잘못 입력하셨습니다. 다시 입력해주세요.");
 
-        ObjectInputStream ois = null;
-        try {
-            ois = new ObjectInputStream(new FileInputStream(filePath));
-            System.out.println("끝");
-            map = (HashMap<String, PhoneBook>) ois.readObject();
-        }catch (IOException e){
-            e.printStackTrace();
-            return null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        } finally {
-            if(ois != null){
-                try{
-                    ois.close();
-                }catch (IOException e){
-
-                }
             }
         }
-
-        return map;
     }
 
-    public void insert() {
-
-    }
-
-    public void search() {
-
-    }
-
-    public void print() {
-
-        if(phone.size() == 0) {
-            System.out.println("등록된 정보가 없습니다.");
-        }else {
-            for (String key : phone.keySet()) {
-                PhoneBook value = phone.get(key);
-                System.out.println(key + value);
-            }
-        }
-
+    static void manual() {
+        System.out.println("= 전화번호 등록 =");
+        System.out.println("▶ /등록");
+        System.out.println("= 전화번호 검색 =");
+        System.out.println("▶ /검색");
+        System.out.println("= 전화번호 삭제 =");
+        System.out.println("▶ /삭제");
+        System.out.println("= 프로그램 종료 =");
+        System.out.println("▶ /종료");
     }
 
 }
