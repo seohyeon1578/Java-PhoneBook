@@ -3,7 +3,7 @@ package kr.hs.dgsw.java;
 import java.io.*;
 import java.util.*;
 
-public class PhoneBookApp {
+public class PhoneBookApp implements PhoneBookAppInterface{
 
     private Scanner sc;
 
@@ -40,6 +40,7 @@ public class PhoneBookApp {
 
     }
 
+    @Override
     public void load() {
         String s;
         String[] str;
@@ -64,6 +65,7 @@ public class PhoneBookApp {
         }
     }
 
+    @Override
     public void insert() {
         String phoneNumber, name;
         try{
@@ -88,6 +90,7 @@ public class PhoneBookApp {
         }
     }
 
+    @Override
     public void search() {
         try {
             System.out.print("이름 or 전화번호: ");
@@ -101,6 +104,7 @@ public class PhoneBookApp {
         }
     }
 
+    @Override
     public void delete() {
         try{
             System.out.print("삭제할 이름: ");

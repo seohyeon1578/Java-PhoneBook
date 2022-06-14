@@ -9,7 +9,7 @@ public class Controller {
     private Scanner sc;
 
     private HashMap<String, String> phone;
-    private PhoneBookApp pba;
+    private PhoneBookAppInterface pba;
 
     private String filePath = "D:/test.txt";
 
