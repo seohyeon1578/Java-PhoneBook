@@ -24,20 +24,25 @@ public class PhoneBookApp implements PhoneBookAppInterface{
         for(Map.Entry<String, String> entry : entryList){
             System.out.printf("전화번호: %-12s 이름: %-12s\n", entry.getKey(), entry.getValue());
         }
-        System.out.println("▶ /도움말");
 
     }
 
     public void sortName(String msg) {
+        boolean listCheck = false;
         List<Map.Entry<String, String>> entryList = new LinkedList<>(phone.entrySet());
         entryList.sort(Map.Entry.comparingByValue());
 
+        System.out.println("= 전화번호부 =");
         for(Map.Entry<String, String> entry : entryList){
             if(entry.getKey().contains(msg) || entry.getValue().contains(msg)){
                 System.out.printf("전화번호: %-12s 이름: %-12s\n", entry.getKey(), entry.getValue());
+                listCheck = true;
             }
         }
 
+        if(!listCheck){
+            System.out.println("[ " + msg + " ]에 대한 검색 결과가 없습니다.");
+        }
     }
 
     @Override
@@ -71,11 +76,14 @@ public class PhoneBookApp implements PhoneBookAppInterface{
         try{
             BufferedWriter bw = new BufferedWriter(new FileWriter(filePath,true));
 
-            System.out.print("전화번호: ");
-            phoneNumber = sc.next();
-            if(phone.get(phoneNumber) != null){
-                System.out.println("이미 등록된 전화번호입니다.");
-                return;
+            while (true) {
+                System.out.print("전화번호: ");
+                phoneNumber = sc.next();
+                if (phone.get(phoneNumber) != null) {
+                    System.out.println("이미 등록된 전화번호입니다. 다시입력해주세요.");
+                    continue;
+                }
+                break;
             }
 
             System.out.print("이름: ");
@@ -95,10 +103,8 @@ public class PhoneBookApp implements PhoneBookAppInterface{
         try {
             System.out.print("이름 or 전화번호: ");
             msg = sc.next();
-
-            System.out.println("= 전화번호부 =");
             sortName(msg);
-            System.out.println("▶ /도움말");
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -110,7 +116,12 @@ public class PhoneBookApp implements PhoneBookAppInterface{
             System.out.print("삭제할 이름: ");
             msg = sc.next();
 
-            if(getKey(phone,msg).contains("\r\n")){
+            if(getKey(phone, msg).equals("")){
+                System.out.println("※ 등록되지 않은 이름입니다.");
+                load();
+                return;
+            }
+            if(getKey(phone, msg).contains("\r\n")){
                 System.out.println("※ 중복된 이름이 있습니다.");
                 sortName(msg);
                 System.out.print("삭제할 번호: ");

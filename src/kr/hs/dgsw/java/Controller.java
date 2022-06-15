@@ -20,6 +20,8 @@ public class Controller {
     }
 
     public void start() {
+        System.out.println("▶ /도움말");
+
         while(true){
             String input = sc.nextLine();
 

@@ -6,4 +6,5 @@ public interface PhoneBookAppInterface {
     void insert();
     void search();
     void delete();
+
 }
